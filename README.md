@@ -20,6 +20,7 @@ cd math-unipd-booking
 - You have to download `chromedriver` form [[here](https://chromedriver.chromium.org/downloads)] (search for the version compatible with your Chrome version), and move the extracted file into the project folder `math-unipd-booking`,
 - Extend the permissions for the bash scripts:
 ```bash
+# extend files permissions
 chmod +x ./book ./check ./remove
 ```
 
