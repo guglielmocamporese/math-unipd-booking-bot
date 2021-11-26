@@ -20,7 +20,7 @@ chmod +x ./book ./check ./remove
 ```
 
 ### Example of Usage
-```python
+```console
 # Book the office
 ./book # book the office 732 from 9:00 to 18:00, today
 ./book --office 702 --tomorrow # book the office 702 from 9:00 to 18:00, tomorrow
