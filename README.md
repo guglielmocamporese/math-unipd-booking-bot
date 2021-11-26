@@ -2,6 +2,8 @@
 
 Currently for registering the presence at the math department you have to manually login into the math website and fill several forms EVERY day. In order to speedup this process, this project proposes a minimal interface of the COVID booking system of the math unipd website that you can use the simple API written in Python.
 
+If you use the code of this repo and you find this project useful, please consider to give a star ⭐!
+
 ### Requirements
 - You have to clone the repo:
 ```console
