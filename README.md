@@ -16,6 +16,11 @@ git clone https://github.com/guglielmocamporese/math-unipd-booking.git
 cd math-unipd-booking
 ```
 - You have to use Python 3.x (specifially I used Python 3.7, but 3.x should be ok),
+- You need the `selenium` package (this is a python package for interacting with web pages):
+```bash
+# install selenium
+pip install selenium
+```
 - You have to have Chrome (for now the code supports only this web browser),
 - You have to download `chromedriver` form [[here](https://chromedriver.chromium.org/downloads)] (search for the version compatible with your Chrome version), and move the extracted file into the project folder `math-unipd-booking`,
 - Extend the permissions for the bash scripts:
