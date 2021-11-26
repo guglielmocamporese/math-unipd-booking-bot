@@ -2,11 +2,13 @@
 
 Currently for registering the presence at the math department you have to manually login into the math website and fill several forms EVERY day. In order to speedup this process, this project proposes a minimal interface of the COVID booking system of the math unipd website that you can use the simple API written in Python.
 
+```
 If you use the code of this repo and you find this project useful, please consider to give a star ⭐!
+```
 
 ### Requirements
 - You have to clone the repo:
-```console
+```bash
 # clone the repo
 git clone https://github.com/guglielmocamporese/math-unipd-booking.git
 
@@ -17,12 +19,12 @@ cd math-unipd-booking
 - You have to have Chrome (for now the code supports only this web browser),
 - You have to download `chromedriver` form [[here](https://chromedriver.chromium.org/downloads)] (search for the version compatible with your Chrome version), and move the extracted file into the project folder `math-unipd-booking`,
 - Extend the permissions for the bash scripts:
-```console
+```bash
 chmod +x ./book ./check ./remove
 ```
 
 ### Example of Usage
-```console
+```bash
 # Book the office
 ./book # book the office 732 from 9:00 to 18:00, today
 ./book --office 702 --tomorrow # book the office 702 from 9:00 to 18:00, tomorrow
@@ -37,7 +39,7 @@ chmod +x ./book ./check ./remove
 ```
 
 Here all the input arguments that are supported:
-```console
+```bash
   -h, --help            show this help message and exit
   --mode {book,check,remove}
                         Year of the booking.
