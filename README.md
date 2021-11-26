@@ -24,8 +24,7 @@ chmod +x ./book ./check ./remove
 # Book the office
 ./book # book the office 732 from 9:00 to 18:00, today
 ./book --office 702 --tomorrow # book the office 702 from 9:00 to 18:00, tomorrow
-./book --tomorrow -ta 10 -td 19 # book the office 732 from 10:00 to 19:00, tomorrow
-./book --next_week # book the office 732 from 9:00 to 18:00, all the next week
+./book --next_week -ta 10 -td 19 # book the office 732 from 10:00 to 19:00, all the next week
 ./book --this_month # book the office 732 from 9:00 to 18:00, all this month
 
 # Check reservations
