@@ -34,6 +34,32 @@ chmod +x ./book ./check ./remove
 ./remove --this_week # remove all my reservations of this week in office 732
 ```
 
+Here all the input arguments that are supported:
+```console
+  -h, --help            show this help message and exit
+  --mode {book,check,remove}
+                        Year of the booking.
+  --year {2020,2021,2022}, -y {2020,2021,2022}
+                        Year of the booking.
+  --month {1,2,3,4,5,6,7,8,9,10,11,12}, -m {1,2,3,4,5,6,7,8,9,10,11,12}
+                        Month number of the booking.
+  --day DAY, -d DAY     Day of the booking.
+  --arrival {7,8,9,10,11,12,13,14,15,16,17,18}, -ta {7,8,9,10,11,12,13,14,15,16,17,18}
+                        Time of arrival (h) of the booking.
+  --departure {8,9,10,11,12,13,14,15,16,17,18,19}, -td {8,9,10,11,12,13,14,15,16,17,18,19}
+                        Time of departure (h) of the booking.
+  --office OFFICE, -o OFFICE
+                        Office number.
+  --guests GUESTS, -g GUESTS
+                        Guests names (optional).
+  --today               Use today as the time reference.
+  --tomorrow            Use tomorrow as the time reference.
+  --this_week           Use this week as the time reference.
+  --next_week           Use next week as the time reference.
+  --this_month          Use this month as the time reference.
+  --next_month          Use next month as the time reference.
+```
+
 ### TODO
 - Extend the code on different web browser other than Chrome,
 - Add functionalities (booking statistics, ...)
