@@ -71,5 +71,6 @@ Here all the input arguments that are supported:
 ```
 
 ### TODO
+- Write a Telegram bot for this project,
 - Extend the code on different web browser other than Chrome,
 - Add functionalities (booking statistics, ...)
