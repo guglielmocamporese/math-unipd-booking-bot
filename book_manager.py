@@ -181,11 +181,11 @@ class BookManager:
 			args_day = self.args
 			args_day['year'], args_day['month'], args_day['day'] = day.year, day.month, day.day
 			args_day['month'] = datetime.date(1900, args['month'] , 1).strftime('%B')
-			if mode == 'book':
+			if self.mode == 'book':
 				out_i = book_single_day(self.user, self.pwd, args_day)
-			elif mode == 'check':
+			elif self.mode == 'check':
 				out_i = check_single_day(self.user, self.pwd, args_day)
-			elif mode == 'remove':
+			elif self.mode == 'remove':
 				out_i = remove_single_day(self.user, self.pwd, args_day)
 			out += [out_i]
 		return out
