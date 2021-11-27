@@ -11,9 +11,9 @@ From Telegram search for `math-unipd-booking` and start using the bot!
 
 ### Example of Usage
 ```bash
-/book --user <math/username> --pwd <math/password> --this_week
-/check --user <math/username> --pwd <math/password> --tomorrow --arrival 9 --departure 18
-/remove --user <math/username> --pwd <math/password> --office 702 --next_week
+/book --user math/username --pwd math/password --this_week
+/check --user math/username --pwd math/password --tomorrow --arrival 9 --departure 18
+/remove --user math/username --pwd math/password --office 702 --next_week
 ```
 
 
