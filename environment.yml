@@ -1,0 +1,54 @@
+name: math-book
+channels:
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=main
+  - _openmp_mutex=4.5=1_gnu
+  - ca-certificates=2021.10.26=h06a4308_2
+  - certifi=2021.10.8=py37h06a4308_0
+  - ld_impl_linux-64=2.35.1=h7274673_9
+  - libffi=3.3=he6710b0_2
+  - libgcc-ng=9.3.0=h5101ec6_17
+  - libgomp=9.3.0=h5101ec6_17
+  - libstdcxx-ng=9.3.0=hd4cf53a_17
+  - ncurses=6.3=h7f8727e_2
+  - openssl=1.1.1l=h7f8727e_0
+  - pip=21.2.2=py37h06a4308_0
+  - python=3.7.11=h12debd9_0
+  - readline=8.1=h27cfd23_0
+  - setuptools=58.0.4=py37h06a4308_0
+  - sqlite=3.36.0=hc218d9a_0
+  - tk=8.6.11=h1ccaba5_0
+  - wheel=0.37.0=pyhd3eb1b0_1
+  - xz=5.2.5=h7b6447c_0
+  - zlib=1.2.11=h7b6447c_3
+  - pip:
+    - apscheduler==3.6.3
+    - async-generator==1.10
+    - attrs==21.2.0
+    - backports-zoneinfo==0.2.1
+    - cachetools==4.2.2
+    - cffi==1.15.0
+    - chromedriver-binary==97.0.4692.20.0
+    - chromedriver-binary-auto==0.1.1
+    - cryptography==36.0.0
+    - h11==0.12.0
+    - idna==3.3
+    - outcome==1.1.0
+    - pycparser==2.21
+    - pyopenssl==21.0.0
+    - python-telegram-bot==13.8.1
+    - pytz==2021.3
+    - pytz-deprecation-shim==0.1.0.post0
+    - selenium==4.1.0
+    - six==1.16.0
+    - sniffio==1.2.0
+    - sortedcontainers==2.4.0
+    - tornado==6.1
+    - trio==0.19.0
+    - trio-websocket==0.9.2
+    - tzdata==2021.5
+    - tzlocal==4.1
+    - urllib3==1.26.7
+    - wsproto==1.0.0
+prefix: /home/guglielmo/anaconda3/envs/math-book
