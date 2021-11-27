@@ -71,6 +71,6 @@ Here all the input arguments that are supported:
 ```
 
 ### TODO
-[X] Implemented a Telegram Bot that handles bookings,
-[ ] Extend the code on different web browser other than Chrome,
-[ ] Add functionalities (booking statistics, ...)
+- [X] Implemented a Telegram Bot that handles bookings,
+- [ ] Extend the code on different web browser other than Chrome,
+- [ ] Add functionalities (booking statistics, ...)
