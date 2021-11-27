@@ -6,6 +6,18 @@ Currently for registering the presence at the math department you have to manual
 If you use the code of this repo and you find this project useful, please consider to give a star ⭐!
 ```
 
+# Booking with the Telegram Bot
+From Telegram search for `math-unipd-booking` and start using the bot!
+
+### Example of Usage
+```
+/book --user <math/username> --pwd <math/password> --this_week
+/check --user <math/username> --pwd <math/password> --tomorrow --arrival 9 --departure 18
+/remove --user <math/username> --pwd <math/password> --office 702 --next_week
+```
+
+
+# Booking with the Python API
 ### Requirements
 - You have to clone the repo:
 ```bash
@@ -69,6 +81,8 @@ Here all the input arguments that are supported:
   --this_month          Use this month as the time reference.
   --next_month          Use next month as the time reference.
 ```
+
+# Contributing
 
 ### TODO
 - [X] Implemented a Telegram Bot that handles bookings,
