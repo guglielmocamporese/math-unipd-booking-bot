@@ -26,22 +26,22 @@ pip install selenium
 - Extend the permissions for the bash scripts:
 ```bash
 # extend files permissions
-chmod +x ./book ./check ./remove
+chmod +x ./scripts/book ./scripts/check ./scripts/remove
 ```
 
 ### Example of Usage
 ```bash
 # Book the office
-./book # book the office 732 from 9:00 to 18:00, today
-./book --office 702 --tomorrow # book the office 702 from 9:00 to 18:00, tomorrow
-./book --next_week -ta 10 -td 19 # book the office 732 from 10:00 to 19:00, all the next week
-./book --this_month # book the office 732 from 9:00 to 18:00, all this month
+./scripts/book # book the office 732 from 9:00 to 18:00, today
+./scripts/book --office 702 --tomorrow # book the office 702 from 9:00 to 18:00, tomorrow
+./scripts/book --next_week -ta 10 -td 19 # book the office 732 from 10:00 to 19:00, all the next week
+./scripts/book --this_month # book the office 732 from 9:00 to 18:00, all this month
 
 # Check reservations
-./check --this_month # check all my reservations of this month in office 732
+./scripts/check --this_month # check all my reservations of this month in office 732
 
 # Remove reservations
-./remove --this_week # remove all my reservations of this week in office 732
+./scripts/remove --this_week # remove all my reservations of this week in office 732
 ```
 
 Here all the input arguments that are supported:

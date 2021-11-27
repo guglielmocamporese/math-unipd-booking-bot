@@ -48,6 +48,8 @@ def get_args(stdin):
 	parser.add_argument('--next_week', action='store_true', help='Use next week as the time reference.')
 	parser.add_argument('--this_month', action='store_true', help='Use this month as the time reference.')
 	parser.add_argument('--next_month', action='store_true', help='Use next month as the time reference.')
+	parser.add_argument('--user', type=str, default='', help='Math username.')
+	parser.add_argument('--pwd', type=str, default='', help='Math password.')
 	args = vars(parser.parse_args())
 
 	# Process input args

@@ -200,8 +200,9 @@ if __name__ == '__main__':
 	args = get_args(sys.argv[1:])
 
 	# Retrieve math credentials
-	user = input('[Username] ')
-	pwd = getpass.getpass('[Password] ')
+	user = input('[Username] ') if len(args['user']) == 0 else args['user']
+	pwd = getpass.getpass('[Password] ') if len(args['pwd']) == 0 else args['pwd']
+        
 
 	# Book
 	bm = BookManager(user, pwd, args, mode=args['mode'])
