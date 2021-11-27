@@ -1,5 +1,4 @@
 from telegram.ext import Updater, InlineQueryHandler, CommandHandler
-import requests
 import subprocess
 
 def run_bash_cmd(cmd):
@@ -11,6 +10,9 @@ def run_bash_cmd(cmd):
     return output.decode('utf8'), error
 
 def _act(update, context, bash_file):
+    """
+    Wrapper to book, check, remove functions.
+    """
     args = ' ' + ' '.join(context.args)
     args = args.replace(' —', ' --')
     if ('user' not in args) and ('pwd' not in args):
@@ -19,21 +21,20 @@ def _act(update, context, bash_file):
         out, err = run_bash_cmd(bash_file + args)
         context.bot.send_message(update.message.chat_id, out)
 
-def book(update, context):
-    _act(update, context, './scripts/book')
-
-def check(update, context):
-    _act(update, context, './scripts/check')
-
-def remove(update, context):
-    _act(update, context, './scripts/remove')
+def book(update, context): _act(update, context, './scripts/book')
+def check(update, context): _act(update, context, './scripts/check')
+def remove(update, context): _act(update, context, './scripts/remove')
 
 def start(update, context):
+    """
+    Start function for the bot.
+    """
     chat_id = update.message.chat_id
     first_name = update.message.chat.first_name
     context.bot.send_message(chat_id, f'Welcome {first_name}')
+    
 
-def main():
+if __name__ == '__main__':
     BOT_TOKEN = '2113822109:AAE_z5WPZjX9jRi-v6ehFj2jDstW3weAW-A'
     updater = Updater(BOT_TOKEN)
     dispatcher = updater.dispatcher
@@ -43,6 +44,3 @@ def main():
     dispatcher.add_handler(CommandHandler('remove', remove))
     updater.start_polling()
     updater.idle()
-
-if __name__ == '__main__':
-    main()

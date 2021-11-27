@@ -4,10 +4,8 @@ Written by Guglielmo Camporese, guglielmocamporese@gmail.com
 """
 
 import datetime
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
 from utils import load_page
 
 HTML_FORM_IDS = {
@@ -21,7 +19,6 @@ HTML_FORM_IDS = {
 }
 CHROME_DRIVER_PATH = './chromedriver' # path of chromedriver
 VERBOSE = True
-
 
 def book_single_day(user, pwd, args):
 	"""
