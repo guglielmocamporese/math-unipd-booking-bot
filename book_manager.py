@@ -17,7 +17,6 @@ HTML_FORM_IDS = {
 	'office': 'tufficio',
 	'guests': 'tguest',
 }
-CHROME_DRIVER_PATH = './chromedriver' # path of chromedriver
 VERBOSE = True
 
 def book_single_day(user, pwd, args):

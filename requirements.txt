@@ -1,9 +1,0 @@
-click==7.1.2
-face-recognition-models==0.3.0
-numpy==1.19.4
-opencv-python==4.4.0.46
-Pillow==8.0.1
-pyobjc-core==6.2.2
-pyobjc-framework-Cocoa==6.2.2
-pyobjc-framework-Quartz==6.2.2
-pyserial==3.4

@@ -5,11 +5,13 @@ Written by Guglielmo Camporese, guglielmocamporese@gmail.com
 
 import argparse
 import datetime
+import os
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
-CHROME_DRIVER_PATH = './chromedriver' # path of chromedriver
+#CHROME_DRIVER_PATH = os.path.abspath('./chromedriver') # path of chromedriver
+import chromedriver_binary
 
 def load_page(user, pwd):
 	"""
@@ -19,7 +21,8 @@ def load_page(user, pwd):
 
 	op = webdriver.ChromeOptions()
 	op.add_argument('headless')
-	driver = webdriver.Chrome(service=Service(CHROME_DRIVER_PATH), options=op)
+	#driver = webdriver.Chrome(service=Service(CHROME_DRIVER_PATH), options=op)
+	driver = webdriver.Chrome(options=op)
 	driver.get(f'https://{user}:{pwd}@novnc.math.unipd.it/presenze/index.php')
 	return driver
 
