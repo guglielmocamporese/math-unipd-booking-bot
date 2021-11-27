@@ -35,6 +35,7 @@ def start(update, context):
     
 
 if __name__ == '__main__':
+    print('Running bot...')
     BOT_TOKEN = '2113822109:AAE_z5WPZjX9jRi-v6ehFj2jDstW3weAW-A'
     updater = Updater(BOT_TOKEN)
     dispatcher = updater.dispatcher
