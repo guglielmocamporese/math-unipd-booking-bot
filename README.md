@@ -7,7 +7,7 @@ If you use the code of this repo and you find this project useful, please consid
 ```
 
 # Using the Telegram Bot
-From Telegram search for `math-unipd-booking-bot` and start using the bot!
+From Telegram search for `math-unipd-booking` and start using the bot!
 
 ### Example of Usage
 ```bash
