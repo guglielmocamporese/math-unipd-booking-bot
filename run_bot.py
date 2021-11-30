@@ -37,7 +37,7 @@ def start(update, context):
         '\n/remove --user math_user --pwd math_pass --tomorrow')
     url = 'https://github.com/guglielmocamporese/math-unipd-booking'
     start_str = f'Welcome {first_name}, these are some examples for using this BOT.\n\n' + example_str + f'\n\nMore information at {url}'
-    context.bot.send_message(chat_id, start_str, parse_mode=telegram.ParseMode.MARKDOWN)
+    context.bot.send_message(chat_id, '`' + start_str + '`', parse_mode=telegram.ParseMode.MARKDOWN)
     
 
 if __name__ == '__main__':
