@@ -6,36 +6,31 @@ Currently for registering the presence at the math department you have to manual
 If you use the code of this repo and you find this project useful, please consider to give a star ⭐!
 ```
 
-# Booking with the Telegram Bot
-From Telegram search for `math-unipd-booking` and start using the bot!
+# Using the Telegram Bot
+From Telegram search for `math-unipd-booking-bot` and start using the bot!
 
 ### Example of Usage
 ```bash
-/book --user math/username --pwd math/password --this_week
-/check --user math/username --pwd math/password --tomorrow --arrival 9 --departure 18
-/remove --user math/username --pwd math/password --office 702 --next_week
+/book --user math_username --pwd math_password --this_week
+/check --user math_username --pwd math_password --tomorrow --arrival 9 --departure 18
+/remove --user math_username --pwd math_password --office 702 --next_week
 ```
 
+<details>
+<summary>Contributing to the Math-Unipd-Booking Python API</summary>
 
-# Booking with the Python API
 ### Requirements
 - You have to clone the repo:
 ```bash
 # clone the repo
-git clone https://github.com/guglielmocamporese/math-unipd-booking.git
+git clone https://github.com/guglielmocamporese/math-unipd-booking-bot.git
 
 # go the project folder
-cd math-unipd-booking
+cd math-unipd-booking-bot
 ```
 - You have to use Python 3.x (specifially I used Python 3.7, but 3.x should be ok),
-- You need the `selenium` package (this is a python package for interacting with web pages):
-```bash
-# install selenium
-pip install selenium
-```
-- You have to have Chrome (for now the code supports only this web browser),
-- You have to download `chromedriver` form [[here](https://chromedriver.chromium.org/downloads)] (search for the version compatible with your Chrome version), and move the extracted file into the project folder `math-unipd-booking`,
-- Extend the permissions for the bash scripts:
+- You need the `lxml`, `pandas` and `python-telegram-bot` packages installed,
+- You need to extend the permissions for the bash scripts:
 ```bash
 # extend files permissions
 chmod +x ./scripts/book ./scripts/check ./scripts/remove
@@ -58,33 +53,44 @@ chmod +x ./scripts/book ./scripts/check ./scripts/remove
 
 Here all the input arguments that are supported:
 ```bash
+usage: ['--help'] [-h] [--mode {book,check,remove}] [--year {2020,2021,2022}]
+                  [--month {1,2,3,4,5,6,7,8,9,10,11,12}] [--day DAY]
+                  [--arrival {7,8,9,10,11,12,13,14,15,16,17,18}]
+                  [--departure {8,9,10,11,12,13,14,15,16,17,18,19}]
+                  [--office OFFICE] [--guests GUESTS] [--today] [--tomorrow]
+                  [--this_week] [--next_week] [--this_month] [--next_month]
+                  [--user USER] [--pwd PWD]
+
+optional arguments:
   -h, --help            show this help message and exit
   --mode {book,check,remove}
                         Year of the booking.
-  --year {2020,2021,2022}, -y {2020,2021,2022}
+  --year {2020,2021,2022}
                         Year of the booking.
-  --month {1,2,3,4,5,6,7,8,9,10,11,12}, -m {1,2,3,4,5,6,7,8,9,10,11,12}
+  --month {1,2,3,4,5,6,7,8,9,10,11,12}
                         Month number of the booking.
-  --day DAY, -d DAY     Day of the booking.
-  --arrival {7,8,9,10,11,12,13,14,15,16,17,18}, -ta {7,8,9,10,11,12,13,14,15,16,17,18}
+  --day DAY             Day of the booking.
+  --arrival {7,8,9,10,11,12,13,14,15,16,17,18}
                         Time of arrival (h) of the booking.
-  --departure {8,9,10,11,12,13,14,15,16,17,18,19}, -td {8,9,10,11,12,13,14,15,16,17,18,19}
+  --departure {8,9,10,11,12,13,14,15,16,17,18,19}
                         Time of departure (h) of the booking.
-  --office OFFICE, -o OFFICE
-                        Office number.
-  --guests GUESTS, -g GUESTS
-                        Guests names (optional).
+  --office OFFICE       Office number.
+  --guests GUESTS       Guests names (optional).
   --today               Use today as the time reference.
   --tomorrow            Use tomorrow as the time reference.
   --this_week           Use this week as the time reference.
   --next_week           Use next week as the time reference.
   --this_month          Use this month as the time reference.
   --next_month          Use next month as the time reference.
+  --user USER           Math username.
+  --pwd PWD             Math password.
 ```
 
-# Contributing
 
 ### TODO
 - [X] Implemented a Telegram Bot that handles bookings,
+- [ ] Implemented a Slack Bot that handles bookings,
 - [ ] Extend the code on different web browser other than Chrome,
 - [ ] Add functionalities (booking statistics, ...)
+</details>
+
