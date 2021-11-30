@@ -39,7 +39,6 @@ def get_args(stdin):
         args.today = False
     return args
 
-
 def parse_table(content):
     """
     Scrape table from HTML.
@@ -61,6 +60,7 @@ def parse_table(content):
 def pretty_print(dict_, drop_keys=[]):
     df = pd.DataFrame(dict_)
     df = df.drop(labels=drop_keys, axis=1)
+    df = df.rename(columns={c: c[:3] for c in df.columns})
     return df.to_markdown(index=False, tablefmt='simple')
 
 def merge_dict(dict_list):

@@ -169,7 +169,7 @@ class BookManager:
                 day += datetime.timedelta(1)
         if args.today:
             days += [day]
-        if args.tomorrow:
+        elif args.tomorrow:
             day += datetime.timedelta(1)
             days += [day]
 
