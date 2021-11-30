@@ -35,6 +35,8 @@ def get_args(stdin):
 
     # Process input args
     args.day_str = datetime.datetime(args.year, args.month, args.day).strftime('%a')
+    if args.tomorrow:
+        args.today = False
     return args
 
 
