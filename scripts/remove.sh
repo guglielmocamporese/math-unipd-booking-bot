@@ -1,2 +1,1 @@
-#!/bin/bash
 python book_manager.py --mode remove $@

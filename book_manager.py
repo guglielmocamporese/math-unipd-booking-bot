@@ -1,204 +1,205 @@
-"""
-This project creates an API for accessing and interacting with the booking system at the math department at unipd.
-Written by Guglielmo Camporese, guglielmocamporese@gmail.com
-"""
-
+import requests
+from requests.auth import HTTPBasicAuth
+from lxml import etree
+import re
 import datetime
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from utils import load_page
+import logging
+import sys
 
-HTML_FORM_IDS = {
-    'year': 'tyear',
-    'month': 'tmonth',
-    'day': 'tday',
-    'arrival': 'tbegin',
-    'departure': 'tend',
-    'office': 'tufficio',
-    'guests': 'tguest',
-}
-VERBOSE = True
-
-def book_single_day(user, pwd, args):
-    """
-    Book the office on a single day.
-    """
-    driver = load_page(user, pwd)
-    for k in ['year', 'month', 'day']:
-        search = driver.find_elements(By.NAME, HTML_FORM_IDS[k])[0]
-        search.send_keys(args[k])
-    search.send_keys(Keys.RETURN)
-
-    search = driver.find_elements(By.TAG_NAME, 'table')[0]
-    search = search.find_elements(By.TAG_NAME, 'tr')
-    reservation_already_done = len(search) > 1
-
-    if reservation_already_done:
-        h0, h1, _, office = search[1].text.split()
-        day_str = datetime.datetime(args['year'], datetime.datetime.strptime(args['month'], '%B').month, 
-                                                                                args['day']).strftime('%a')
-        print(f'You have already booked the office {office} for {day_str} {args["day"]}-{args["month"][:3]}-{args["year"]} '
-                  f'from {int(h0)}:00 to {int(h1)}:00.')
-    
-    else:
-        for k in ['arrival', 'departure', 'office', 'guests']:
-            search = driver.find_elements(By.NAME, HTML_FORM_IDS[k])[0]
-            search.send_keys(args[k])
-        search.send_keys(Keys.RETURN)
-
-        search = driver.find_elements(By.CLASS_NAME, 'sansserif')
-        reservation_done = not any(['Access not permitted' in s.text for s in search]) 
-        if VERBOSE:
-            if reservation_done:
-                day_str = datetime.datetime(args['year'], datetime.datetime.strptime(args['month'], '%B').month, 
-                                                                        args['day']).strftime('%a')
-                print(f'Reservation on {day_str} {args["day"]}-{args["month"][:3]}-{args["year"]} ' 
-                          f'from {args["arrival"]}:00 to {args["departure"]}:00 in the office {args["office"]} done!')
-            else:
-                print('Reservation not done.')
-    driver.quit()
-
-def check_single_day(user, pwd, args):
-    """
-    Book the office on a single day.
-    """
-    driver = load_page(user, pwd)
-    for k in ['year', 'month', 'day']:
-        search = driver.find_elements(By.NAME, HTML_FORM_IDS[k])[0]
-        search.send_keys(args[k])
-    search.send_keys(Keys.RETURN)
-
-    search = driver.find_elements(By.TAG_NAME, 'table')[0]
-    search = search.find_elements(By.TAG_NAME, 'tr')
-    reservation_already_done = len(search) > 1
-    day_str = datetime.datetime(args['year'], datetime.datetime.strptime(args['month'], '%B').month, 
-                                                            args['day']).strftime('%a')
-    if reservation_already_done:
-        h0, h1, _, office = search[1].text.split()
-        print(f'You have already booked the office {office} for {day_str} {args["day"]}-{args["month"][:3]}-{args["year"]} '
-                  f'from {int(h0)}:00 to {int(h1)}:00.')
-    else:
-        print(f'You have NOT booked the office {args["office"]} for {day_str} {args["day"]}-{args["month"][:3]}-{args["year"]}.')
-    driver.quit()
-
-def remove_single_day(user, pwd, args):
-    """
-    Remove booking on a single day.
-    """
-    driver = load_page(user, pwd)
-    for k in ['year', 'month', 'day']:
-        search = driver.find_elements(By.NAME, HTML_FORM_IDS[k])[0]
-        search.send_keys(args[k])
-    search.send_keys(Keys.RETURN)
-
-    search = driver.find_elements(By.TAG_NAME, 'table')[0]
-    search = search.find_elements(By.TAG_NAME, 'tr')
-    reservation_already_done = len(search) > 1
-    day_str = datetime.datetime(args['year'], datetime.datetime.strptime(args['month'], '%B').month, 
-                                                            args['day']).strftime('%a')
-    if reservation_already_done:
-        search = driver.find_elements(By.ID, 'chooseday')[0]
-        search.click()
-        search = driver.find_elements(By.CLASS_NAME, 'sansserif')
-        removed = any(['Delete successful' in s.text for s in search])
-        if removed:
-            print(f'Booking in office {args["office"]} for {day_str} {args["day"]}-{args["month"][:3]}-{args["year"]} removed.')
-        else:
-            print(f'Booking in office {args["office"]} for {day_str} {args["day"]}-{args["month"][:3]}-{args["year"]} NOT removed.')
-    else:
-        print(f'You have NOT booked the office {args["office"]} for {day_str} {args["day"]}-{args["month"][:3]}-{args["year"]}.')
-    driver.quit()
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='<code>%(message)s</code>')
 
 class BookManager:
-    def __init__(self, user, pwd, args, mode=None):
+    """
+    Book manager definition.
+    """
+    def __init__(self, user, pwd, verbose=True):
         self.user = user
         self.pwd = pwd
-        self.args = args
-        assert mode in ['book', 'check', 'remove']
-        self.mode = mode
+        self.verbose = verbose
+        
+    def book_single(self, args, verbose=None):
+        """
+        Book for a single timeslot.
+        """
+        if verbose is None:
+            verbose = self.verbose
+        with requests.Session() as s:
+            payload = {
+                'tday': f'{args.day:02d}',
+                'tmonth': f'{args.month:02d}',
+                'tyear': f'{args.year}',
+                'tbegin': f'{args.arrival:02d}',
+                'tend': f'{args.departure:02d}',
+                'tufficio': f'{args.office}',
+                'tguest': f'{args.guests}',
+            }
+            r = s.post('https://novnc.math.unipd.it/presenze/time.php', auth=HTTPBasicAuth(self.user, self.pwd), 
+                       data=payload)
+            r = s.post('https://novnc.math.unipd.it/presenze/register.php', auth=HTTPBasicAuth(self.user, self.pwd), 
+                       data=payload)
+        booked = 'Access not permitted' not in r.text 
+        if booked:
+            logging.info(f'Registration for {args.day_str[:3]} {args.year}-{args.month}-{args.day} in the office '
+                         f'{args.office} done!')
+        else:
+            logging.info(f'Registration for {args.day_str[:3]} {args.year}-{args.month}-{args.day} in the office '
+                         f'{args.office} already done!')
+        return booked
 
-    def run(self):
+    def check_single(self, args, verbose=None):
         """
-        Run the book manager (book reservations, check reservations, remove ressrvations).
+        Check a booking given a specific day.
         """
-        days = [datetime.date.today()]
-        if self.args['this_week']:
-            day = days[-1] + datetime.timedelta(1)
+        if verbose is None:
+            verbose = self.verbose
+        with requests.Session() as s:
+            payload = {
+                'tday': f'{args.day:02d}',
+                'tmonth': f'{args.month:02d}',
+                'tyear': f'{args.year}',
+                'tbegin': f'{args.arrival:02d}',
+                'tend': f'{args.departure:02d}',
+                'tufficio': f'{args.office}',
+                'tguest': f'{args.guests}',
+            }
+            r = s.post('https://novnc.math.unipd.it/presenze/time.php', auth=HTTPBasicAuth(self.user, self.pwd), 
+                       data=payload)
+            table = utils.parse_table(r.content)
+            num_rows = len(list(table.values())[0])
+            table['Date'] = [f'{args.day_str} {args.year}-{args.month}-{args.day}' for _ in range(num_rows)]
+
+            if num_rows == 0:
+                if verbose:
+                    logging.info(f'There are no reservations on {args.day_str[:3]} {args.year}-{args.month}-{args.day} in '
+                                 f'the office {args.office}.')
+            else:
+                if verbose:
+                    logging.info(f'Reservations on {args.day_str[:3]} {args.year}-{args.month}-{args.day} in the '
+                                 f'office {args.office}:\n')
+                    logging.info(utils.pretty_print(table, drop_keys=['Delete', 'ttimeid', 'Person']))
+        return table
+
+    def remove_single(self, args, verbose=None):
+        """
+        Remove a registration given a timeslot.
+        """
+        if verbose is None:
+            verbose = self.verbose
+        table = self.check_single(args, verbose=False)
+        num_rows = len(list(table.values())[0])
+        if num_rows == 0:
+            logging.info(f'There are no reservations on {args.day_str[:3]} {args.year}-{args.month}-{args.day} in the '
+                         f'office {args.office}.')
+
+        # Remove all reservations for the entire day
+        for i in range(num_rows):
+            payload = {
+                'username': self.user,
+                'tday': f'{args.day:02d}',
+                'tmonth': f'{args.month:02d}',
+                'tyear': f'{args.year}',
+                'tbegin': table['Arrival'][i],
+                'tend': table['Departure'][i],
+                'tufficio': table['Office'][i],
+                'tguest': '',
+                'ttimeid': table['ttimeid'][i],
+            }
+            with requests.Session() as s:
+                r = s.post('https://novnc.math.unipd.it/presenze/time.php', auth=HTTPBasicAuth(self.user, self.pwd),
+                           data=payload)
+                r = s.post('https://novnc.math.unipd.it/presenze/delete.php', auth=HTTPBasicAuth(self.user, self.pwd),
+                           data=payload)
+                if 'Delete successful' in r.text:
+                    logging.info(f'Reservation {args.day_str[:3]} {args.year}-{args.month}-{args.day} from '
+                                 f'{table["Arrival"][i]} to {table["Departure"][i]} in the office {args.office} removed!')
+                else:
+                    logging.info('Reservation NOT removed!')
+
+    def run(self, args, verbose=None):
+        if args.mode == 'book':
+            func = self.book_single
+        elif args.mode == 'check':
+            func = self.check_single
+        elif args.mode == 'remove':
+            func = self.remove_single
+        else:
+            raise Exception(f'Error. Mode "{args.mode}" is not supported.')
+
+        days = []
+        day = datetime.date.today()
+        if args.this_week:
             while True:
                 if day.strftime('%a') in ['Sat', 'Sun']:
                     break
                 days += [day]
                 day += datetime.timedelta(1)
-        
-        elif self.args['next_week']:
-            day = days[-1] + datetime.timedelta(1)
+        if args.next_week:
             weekend_passed = False
             while True:
-                if day.strftime('%a') not in ['Sat', 'Sun']:
-                    days += [day]
+                if day.strftime('%a') == 'Sun':
+                    weekend_passed = True
                 elif day.strftime('%a') == 'Sat':
                     if weekend_passed:
-                            break
-                elif day.strftime('%a') == 'Sun':
-                    weekend_passed = True
+                        break
+                else:
+                    if weekend_passed:
+                        days += [day]
                 day += datetime.timedelta(1)
-
-        elif self.args['this_month']:
-            day = days[-1] + datetime.timedelta(1)
-            year, month = datetime.date.today().year, datetime.date.today().month
+        if args.this_month:
+            month = day.month + 12 * day.year
+            month_passed = False
             while True:
-                if (day.year * 12 + day.month - (year * 12 + month)) == 1:
+                if (day.month + 12 * day.year - 1) == month:
+                    month_passed = True
+                if month_passed:
                     break
                 if day.strftime('%a') not in ['Sat', 'Sun']:
                     days += [day]
                 day += datetime.timedelta(1)
-
-        elif self.args['next_month']:
-            day = days[-1] + datetime.timedelta(1)
-            year, month = datetime.date.today().year, datetime.date.today().month
+        if args.next_month:
+            month = day.month + 12 * day.year
+            month_passed = False
             while True:
-                if (day.year * 12 + day.month - (year * 12 + month)) == 2:
+                if (day.month + 12 * day.year - 1) == month:
+                    month_passed = True
+                if (day.month + 12 * day.year - 2) == month:
                     break
-                if day.strftime('%a') not in ['Sat', 'Sun']:
+                if (day.strftime('%a') not in ['Sat', 'Sun']) and month_passed:
                     days += [day]
                 day += datetime.timedelta(1)
+        if args.today:
+            days += [day]
+        if args.tomorrow:
+            day += datetime.timedelta(1)
+            days += [day]
 
-        else:
-            if self.mode == 'book':
-                return book_single_day(self.user, self.pwd, self.args)
-            elif self.mode == 'check':
-                return check_single_day(self.user, self.pwd, self.args)
-            elif self.mode == 'remove':
-                return remove_single_day(self.user, self.pwd, self.args)
-
+        # loop over days
         out = []
         for day in days:
-            args_day = self.args
-            args_day['year'], args_day['month'], args_day['day'] = day.year, day.month, day.day
-            args_day['month'] = datetime.date(1900, args['month'] , 1).strftime('%B')
-            if self.mode == 'book':
-                out_i = book_single_day(self.user, self.pwd, args_day)
-            elif self.mode == 'check':
-                out_i = check_single_day(self.user, self.pwd, args_day)
-            elif self.mode == 'remove':
-                out_i = remove_single_day(self.user, self.pwd, args_day)
-            out += [out_i]
+            args.day = day.day
+            args.month = day.month
+            args.year = day.year
+            args.day_str = datetime.datetime(args.year, args.month, args.day).strftime('%a')
+            out += [func(args, verbose=verbose if args.mode != 'check' else False)]
+        if args.mode == 'check':
+            out = utils.merge_dict(out)
+            logging.info(f'Reservations on {day.month}-{day.year} in the office {args.office}:\n')
+            logging.info(utils.pretty_print(out, drop_keys=['Delete', 'ttimeid', 'Person']))
         return out
 
 
 if __name__ == '__main__':
     import sys
     import getpass
-    from utils import get_args
+    import utils
 
     # Retrieve input args
-    args = get_args(sys.argv[1:])
+    args = utils.get_args(sys.argv[1:])
 
     # Retrieve math credentials
-    user = input('[Username] ') if len(args['user']) == 0 else args['user']
-    pwd = getpass.getpass('[Password] ') if len(args['pwd']) == 0 else args['pwd']
-    
+    user = input('[Username] ') if len(args.user) == 0 else args.user
+    pwd = getpass.getpass('[Password] ') if len(args.pwd) == 0 else args.pwd
 
     # Book
-    bm = BookManager(user, pwd, args, mode=args['mode'])
-    bm.run()
+    bm = BookManager(user, pwd)
+    bm.run(args)

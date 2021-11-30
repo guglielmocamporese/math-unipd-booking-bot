@@ -1,4 +1,5 @@
 from telegram.ext import Updater, InlineQueryHandler, CommandHandler
+import telegram
 import subprocess
 
 def run_bash_cmd(cmd):
@@ -16,14 +17,14 @@ def _act(update, context, bash_file):
     args = ' ' + ' '.join(context.args)
     args = args.replace(' —', ' --')
     if ('user' not in args) and ('pwd' not in args):
-        context.bot.send_message(update.message.chat_id, 'You must provide the math "user" and "pwd".')
+        context.bot.send_message(update.message.chat_id, 'You must provide the math "user" and "pwd".', parse_mode=telegram.ParseMode.HTML)
     else:
         out, err = run_bash_cmd(bash_file + args)
-        context.bot.send_message(update.message.chat_id, out)
+        context.bot.send_message(update.message.chat_id, out, parse_mode=telegram.ParseMode.HTML)
 
-def book(update, context): _act(update, context, './scripts/book')
-def check(update, context): _act(update, context, './scripts/check')
-def remove(update, context): _act(update, context, './scripts/remove')
+def book(update, context): _act(update, context, 'bash scripts/book.sh')
+def check(update, context): _act(update, context, 'bash scripts/check.sh')
+def remove(update, context): _act(update, context, 'bash scripts/remove.sh')
 
 def start(update, context):
     """
@@ -31,7 +32,12 @@ def start(update, context):
     """
     chat_id = update.message.chat_id
     first_name = update.message.chat.first_name
-    context.bot.send_message(chat_id, f'Welcome {first_name}')
+    example_str = ('/book --user math_user --pwd math_pass --this_week'
+        '\n/check --user math_user --pwd math_pass --next_month'
+        '\n/remove --user math_user --pwd math_pass --tomorrow')
+    url = 'https://github.com/guglielmocamporese/math-unipd-booking'
+    start_str = f'Welcome {first_name}, these are some examples for using this BOT.\n\n' + example_str + f'\n\nMore information at {url}'
+    context.bot.send_message(chat_id, start_str, parse_mode=telegram.ParseMode.MARKDOWN)
     
 
 if __name__ == '__main__':
