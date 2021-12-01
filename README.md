@@ -26,7 +26,11 @@ From Telegram search for `math-unipd-booking` and start using the bot!
 ```
 
 ### Main commands and parameters
-`/book`, `/check`, `/remove`, `--user`, `--pwd`, `--today` `--tomorrow`, `--this_week`, `--next_week`, `--this_month`, `--next_month`, `--arrival`, `--departure`, `--office`, `--guests`, `--month`, `--year`
+Commands:
+`/book`, `/check`, `/remove`, 
+
+Params:
+`--user`, `--pwd`, `--today` `--tomorrow`, `--this_week`, `--next_week`, `--this_month`, `--next_month`, `--arrival`, `--departure`, `--office`, `--guests`, `--month`, `--year`
 
 <details>
 <summary>Contributing to the Math-Unipd-Booking Python API</summary>
