@@ -25,11 +25,10 @@ From Telegram search for `math-unipd-booking` and start using the bot!
 /remove --user math_username --pwd math_password --office 702 --next_week
 ```
 
-### Main commands and parameters
-Commands:
-`/book`, `/check`, `/remove`, 
+### Main commands
+`/book`, `/check`, `/remove`
 
-Params:
+### Main Params
 `--user`, `--pwd`, `--today` `--tomorrow`, `--this_week`, `--next_week`, `--this_month`, `--next_month`, `--arrival`, `--departure`, `--office`, `--guests`, `--month`, `--year`
 
 <details>
