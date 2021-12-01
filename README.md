@@ -3,7 +3,8 @@
 Currently for registering the presence at the math department you have to manually login into the math website and fill several forms EVERY day. In order to speedup this process, this project proposes a minimal interface of the COVID booking system of the math unipd website that you can use the simple API written in Python.
 
 ```
-If you use the code of this repo and you find this project useful, please consider to give a star ⭐!
+If you use the code of this repo and you find this project useful, 
+please consider to give a star ⭐!
 ```
 
 # Using the Telegram Bot
@@ -11,8 +12,16 @@ From Telegram search for `math-unipd-booking` and start using the bot!
 
 ### Example of Usage
 ```bash
+# start the bot, see main commands
+/start
+
+# book registration
 /book --user math_username --pwd math_password --this_week
+
+# check registration
 /check --user math_username --pwd math_password --tomorrow --arrival 9 --departure 18
+
+# remove registration
 /remove --user math_username --pwd math_password --office 702 --next_week
 ```
 
