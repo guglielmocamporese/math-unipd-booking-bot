@@ -126,14 +126,19 @@ class BookManager:
             raise Exception(f'Error. Mode "{args.mode}" is not supported.')
 
         days = []
-        day = datetime.date.today()
+
+        # this week arg
         if args.this_week:
+            day = datetime.date.today()
             while True:
                 if day.strftime('%a') in ['Sat', 'Sun']:
                     break
                 days += [day]
                 day += datetime.timedelta(1)
-        if args.next_week:
+
+        # next week arg
+        elif args.next_week:
+            day = datetime.date.today()
             weekend_passed = False
             while True:
                 if day.strftime('%a') == 'Sun':
@@ -145,7 +150,10 @@ class BookManager:
                     if weekend_passed:
                         days += [day]
                 day += datetime.timedelta(1)
-        if args.this_month:
+
+        # this month arg
+        elif args.this_month:
+            day = datetime.date.today()
             month = day.month + 12 * day.year
             month_passed = False
             while True:
@@ -156,7 +164,10 @@ class BookManager:
                 if day.strftime('%a') not in ['Sat', 'Sun']:
                     days += [day]
                 day += datetime.timedelta(1)
-        if args.next_month:
+
+        # next month arg
+        elif args.next_month:
+            day = datetime.date.today()
             month = day.month + 12 * day.year
             month_passed = False
             while True:
@@ -167,10 +178,21 @@ class BookManager:
                 if (day.strftime('%a') not in ['Sat', 'Sun']) and month_passed:
                     days += [day]
                 day += datetime.timedelta(1)
-        if args.today:
+
+        # today arg
+        elif args.today:
+            day = datetime.date.today()
             days += [day]
+
+        # tomorrow arg
         elif args.tomorrow:
+            day = datetime.date.today()
             day += datetime.timedelta(1)
+            days += [day]
+
+        # if none of the day groups are specified (default one)
+        else:
+            day = datetime.datetime(args.year, args.month, args.day)
             days += [day]
 
         # loop over days
